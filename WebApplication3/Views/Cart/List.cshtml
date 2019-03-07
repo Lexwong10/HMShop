@@ -1,0 +1,255 @@
+﻿@using Model
+@model List<Cart>
+@{
+    double total = 0;
+    var transfee = 10;
+    var totalQty = 0;
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+    }
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>List</title>
+    <link rel="stylesheet" href="~/Contents/bootstrap.min.css" />
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <style>
+        div {
+            display:block;
+        }
+        .clear {
+            clear:both;
+        }
+        h4 {
+            font-weight:400;
+            margin:0;
+        }
+        ul {
+            list-style:none;
+            padding-left:0;
+        }
+        p {
+            margin:0;
+        }
+        .body {
+            text-align:center;
+            margin:0 auto;
+            width:1280px;
+        }
+        .Title {
+            margin-bottom:20px;
+        }
+        .item {
+            width:600px;
+            padding:0;
+        }
+        .item >ul> li {
+            border:1px solid #dadada;
+            min-height:225px;
+            width:600px;
+            margin-bottom:30px;
+            float:left;
+        }
+        .item > img {
+            width:150px;
+            height:225px;
+            float:left;
+        }
+        .itemdetail {
+            float:left;
+            padding:20px 20px 10px 10px;
+            text-align:left;
+        }
+            .itemdetail > span {
+                font-size:small;
+            }
+        .itemdetailcontent {
+             font-size:small;
+        }
+        .total {
+            float:left;
+            width:300px;
+            height:300px;
+            border:1px solid #dadada;
+            margin-top:15px;
+            margin-left:35px;
+        }
+        .totaltitle {
+            height:40px;
+            border-bottom:1px solid #dadada;
+        }
+        .totalcontent {
+            text-align:left;
+        }
+        .selectAddress {
+            width:300px;
+            border:1px solid #dadada;
+            padding:5px;
+            margin-top:15px;
+            margin-left:35px;
+        }
+        .clear {
+            clear:both;
+        }
+        .addressContent {
+            border-bottom:1px solid #dadada;
+        }
+        .remove {
+           font-size:x-large;
+           margin-left:430px;
+            width:30px;
+            height:30px;
+            text-align:center;
+            vertical-align:middle;
+            margin-top:3px;
+        }
+            .remove:hover {
+                cursor:pointer;
+            }
+    </style>
+    <script src="~/scripts/jquery.min.js"></script>
+    <script>
+        //修改购物车数量
+        function editQty(obj,id) {
+            $.get('/Cart/AjaxEditQty', {
+                Id:id,
+                ProductId : obj,
+                Qty: $('#qty_' + obj).val()
+            }, function (data) {
+                location.href = '/Cart/List';
+            });
+        };
+
+        //删除购物车商品
+        function DeleteItem(id){
+            $.get('/Cart/AjaxDeleteItem',{Id:id},function(){
+                location.href = '/Cart/List';
+            });
+        };
+
+    </script>
+</head>
+<body>
+    <form action="/Order/Add" method="get" id="OrderAddForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="Title">
+                        <h3>购物袋</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="item">
+                            @*单个商品开始*@
+                            <div class="row">
+                                @if (Model == null)
+                                {
+                                    <div class="media" style="border:1px solid #dadada">
+                                        您的购物车为空
+                                    </div>
+                                }
+                                
+                                    @if (Model != null)
+                                    {
+                                        foreach (var c in Model)
+                                        {
+                                            total += Convert.ToDouble(c.Qty * c.Product.OldPrice);
+
+                                            <div class="media" style="border:1px solid #dadada">
+                                                <div class="media-left media-top">
+                                                    <img src="~/Images/ProductImg/@((c.Product.ProductImg.ToList())[4].BigImage)" class="media-object" style="width:150px">
+                                                </div>
+                                                <div class="media-body">
+                                                    <div>
+                                                        <div class="remove" onclick="DeleteItem(@c.Id);">
+                                                            X
+                                                        </div>
+                                                        <span style="font:larger">@c.Product.Name</span><br />
+                                                        <span style="font-weight:bold">
+                                                            ￥@String.Format("{0:0.00}", c.Product.OldPrice)
+                                                        </span>
+
+                                                        <ul class="itemdetailcontent">
+                                                            <li>
+                                                                <span>商品编号:</span>
+                                                                <span>@c.ProductId</span>
+                                                            </li>
+                                                            <li>
+                                                                <span>颜色:</span>
+                                                                <span>@c.Product.ProductColor.Name</span>
+                                                            </li>
+                                                            <li>
+                                                                <span>尺码:</span>
+                                                                <span>@c.Product.ProductSize.Name</span>
+                                                            </li>
+                                                            <li>
+                                                                <span>总价:</span>
+                                                                <span>
+                                                                    ￥@String.Format("{0:0.00}", c.Qty * c.Product.OldPrice)
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="size">
+                                                            <select id="qty_@c.ProductId" onchange="editQty(@c.ProductId,@c.Id);">
+                                                                数量:
+                                                                @for (int i = 1; i <= 20; i++)
+                                                                {
+                                                                    <option value="@i" @if (c.Qty == i) { <text> selected="selected" </text>  }>@i</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="total">
+                            <div class="totaltitle">
+                                <h4>购物袋总金额</h4>
+                            </div>
+                            <div class="totalcontent">
+                                <p>订单价格:￥@total</p>
+                                @if (Model != null)
+                                {
+                                    <p>运费:￥@transfee</p>
+                                }
+                                <p>总价:￥@String.Format("{0:0.00}", total + transfee)</p>
+                            </div>
+                            <div>
+                                <button type="submit">前往结算</button>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="selectAddress">
+                            <h4 style="border-bottom:1px solid #dadada">选择地址</h4>
+                            @foreach (var address in (Session["user"] as User).Address)
+                            {
+                                <fieldset class="addressContent">
+                                    <input style="white-space:nowrap" type="radio" name="AddressId" @if (address.Default == true) { <text> checked="checked" </text>  } value="@address.Id" class="addressId" />
+                                    <p>收件人:@address.Receiver </p>
+                                    <p>联系方式 @address.Phone</p>
+                                    <span>@address.Area.Area2.Area2.AreaName</span>
+                                    <span>@address.Area.Area2.AreaName</span>
+                                    <span>@address.Area.AreaName</span>
+                                    <span>@address.Address1</span>
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="Price" value="@(total + transfee)" />
+    </form>
+
+</body>
+</html>

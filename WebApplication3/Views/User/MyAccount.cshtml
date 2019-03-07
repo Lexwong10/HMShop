@@ -1,0 +1,144 @@
+﻿@model Model.User
+@{
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MyAccount</title>
+
+    <link rel="stylesheet" href="~/Contents/bootstrap.min.css" />
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+
+    <style>
+        a {
+            color:#1a1a1a;
+        }
+        h5 {
+            margin:0 0 15px 0;
+        }
+        .navAccout {
+            margin:0 auto;
+            text-align:center;
+            width:1400px; 
+            border-bottom:1px solid #dadada;
+            height:45px;
+        }
+         #navAccoutMenu> li {
+                margin-right:50px;
+         }
+        .body {
+            margin-top:50px;
+        }
+        .userinfo {
+            font-size:small;
+            padding-right:30px;
+        }
+        .address {
+            margin-top:50px;
+            margin-bottom:50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contianer">
+        <div class="navAccout row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <ul id="navAccoutMenu" class="nav nav-pills">
+                    <li><a href="/User/MyAccount" style="text-decoration-line:underline">概况</a></li>
+                    <li><a href="/User/MyProfile">个人信息</a></li>
+                    <li><a href="/Order/MyOrder">订单</a></li>
+                    <li><a href="/Address/MyAddress">地址簿</a></li>
+                    <li><a href="#">银行卡信息</a></li>
+                    <li><a href="#">我的设置</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+        @*左侧用户信息*@
+        <div class="row body">
+            <div class="col-md-1"></div>
+            <div class="col-md-3 userinfo">
+                <p>@Model.Nickname  &nbsp; 您好！</p>
+                <p>您好！这里是您的 H&M 个人控制面板，您可在此处更新个人详情、付款信息或查看订单。</p>
+                <br />
+                <p>创建账户</p>
+                <br />
+                <p>电子邮箱</p>
+                <p>@Model.Email</p>
+            <br />
+            <p>电话号码</p>
+
+        </div>
+           @*订单状态列表*@
+        <div class="col-md-7">
+            <div class="row">
+                <h5>订单</h5>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            
+                            <th>时间</th>
+                            <th>订单号码</th>
+                            <th>总价</th>
+                            <th>订单状态</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Order)
+                        {
+                        <tr>
+                                <td>@order.OrderTime</td>
+                                <td>@order.Id</td>
+                                <td>@order.Price</td>
+                                <td class="text-dange">@if (order.OrderStatus == 0)
+                                { <text>已取消</text>}
+                                else if (order.OrderStatus == 1)
+                                { <text>下单中</text>}
+                                else if (order.OrderStatus == 2)
+                                { <text>已付款</text>}</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @*默认地址信息*@
+            <div class="row address">
+                <div class="col-md-6" style="padding:0;">
+                    <h5>地址簿</h5>
+                    <a href="/Address/MyAddress">所有地址</a>
+                    <hr />
+                    <h5>家庭地址</h5>
+                    <div class="addressContent">
+                        @Model.Address.FirstOrDefault().Address1
+                    </div>
+                </div>
+
+
+                <div class="col-md-6"></div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+            <div class="col-md-1"></div>
+    </div>
+
+
+    </div>
+</body>
+</html>

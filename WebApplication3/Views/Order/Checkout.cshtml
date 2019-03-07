@@ -1,0 +1,238 @@
+﻿@using Model
+@model List<Order>
+@{ 
+    var user = Session["user"] as User;
+    List<Cart> currentCart = ViewBag.currentCart;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Checkout</title>
+    <link rel="stylesheet" href="~/Contents/bootstrap.min.css" />
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <style>
+        
+        a {
+            color:#1a1a1a;
+        }
+        .container {
+            margin:0 -20px 0 0;
+            width:1280px;
+        }
+        .title {
+            height:100px;
+            border-bottom:1px solid #dadada;
+        }
+            .title > img {
+                margin-left:480px;
+            }
+        .left {
+            width:900px;
+            height:1000px;
+            border-right:1px solid #dadada;
+        }
+        .myInfo {
+            width:600px;
+            height:150px;
+            background:#f8f8f8;
+            margin-top:40px;
+            padding:20px;
+            border:1px solid #1a1a1a;
+        }
+        .editInfo {
+            margin-top:20px;
+            height:30px;
+            width:560px;
+            text-align:center;
+        }
+        .express {
+            margin-top:40px;
+            width:600px;
+            border:1px solid #1a1a1a;
+            padding-left:10px;
+        }
+            .express > tr {
+                height:40px;
+            }
+        .ordertable {
+            width:240px;
+            height:90px;
+        }
+        .ordertable>td {
+            width:120px;
+            height:30px;
+        }
+        .textleft {
+            text-align:left;
+        }
+        .textright {
+            text-align:right;
+        }
+        .orderCount {
+            margin-top:30px;
+            padding:10px 0 10px 0;
+            border-top:1px solid #dadada;
+            margin-bottom:20px;
+        }
+        .col-md-8 {
+            padding-left:0;
+        }
+    </style>
+</head>
+<body>
+    <form action="/OrderDetail/Add" method="post">
+        <input type="hidden" name="OrderId" value="@Model.FirstOrDefault().Id" />
+        @foreach (var c in currentCart)
+        {
+        <input type="hidden" name="ProductId" value="@c.Product.Id" />
+        <input type="hidden" name="Qty" value="@c.Qty" />
+        <input type="hidden" name="Price" value="@(c.Product.OldPrice * c.Qty )" />
+        }
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 title">
+                    <a href="/Cart/List">返回购物车</a>
+                    <img src="~/Images/Logo/hmlogo.jpg" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="row left">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <div class="myInfo ">
+                                <label>我的信息</label><br />
+                                <div style="margin-top:20px;">
+                                    <label>电子邮箱</label><br />
+                                    <span>@((Session["user"] as User).Email)</span>
+                                </div>
+                                <div class="editInfo">
+                                    <a>编辑</a>
+                                </div>
+                            </div>
+
+                            <div class="express">
+                                <table class="table table-condensed ">
+                                    <tbody>
+                                        <tr>
+                                            <td><h5>快递</h5></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>选择送货方式</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr class="success">
+                                            <td>送货上门/备用地址</td>
+                                            <td>标准 2-7 个工作日</td>
+                                            <td>￥10.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <label>邮递地址</label>
+                                    <div class="addressSelect">
+                                        <span>收件人: </span>@Model.FirstOrDefault().Address.Receiver <br />
+                                        <span>地址: </span>@Model.FirstOrDefault().Address.Area.Area2.Area2.AreaName &nbsp;
+                                        @Model.FirstOrDefault().Address.Area.Area2.AreaName &nbsp;
+                                        @Model.FirstOrDefault().Address.Area.AreaName &nbsp;
+                                        @Model.FirstOrDefault().Address.Address1
+                                    </div>
+                                    <div class="phone">
+                                        电话号码:@Model.FirstOrDefault().Address.Phone
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row right">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <header style="margin-top:30px;">
+                                您的订单
+                            </header>
+                            <div class="orderCount">
+                                <table class="ordertable">
+                                    <tbody>
+                                        <tr>
+                                            <td class="textleft">订单价格:</td>
+                                            <td class="textright">
+                                                ￥@String.Format("{0:0.00}", Model.FirstOrDefault().Price - 10)
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="textleft">送货:</td>
+                                            <td class="textright">￥10.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="textleft">总价</td>
+                                            <td class="textright">
+                                                ￥@String.Format("{0:0.00}", Model.FirstOrDefault().Price)
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="cart">
+                                <div class="panel-group" id="accordion">
+                                    <div class="panel panel-default cartDetail" style="width:320px;">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion"
+                                                   href="#collapseOne">
+                                                    <span>查看订单信息</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                @foreach (var c in currentCart)
+                                                {
+                                                    <div class="media">
+                                                        <div class="media-left">
+                                                            <img src="~/Images/ProductImg/@((c.Product.ProductImg.ToList())[4].BigImage)" class="media-object" style="width:65px">
+                                                        </div>
+                                                        <div class="media-body" style="font-size:small">
+                                                            <span style="font-weight:bold">@c.Product.Name</span><br />
+                                                            <span>
+                                                                ￥@String.Format("{0:0.00}", c.Product.OldPrice)
+                                                            </span><br />
+                                                            <span> 数量:</span>
+                                                            <span>@c.Qty</span><br />
+                                                            <span>商品编号:</span>
+                                                            <span>@c.Id</span><br />
+                                                            <span>颜色:</span>
+                                                            <span>@c.ProductColor.Name</span><br />
+                                                            <span>尺码:</span>
+                                                            <span>@c.ProductSize.Name</span>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <input type="submit" value="立即支付" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

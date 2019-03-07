@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="037f305eae8d47cf8c2d3717753f15f0" Name="Diagram1">
+        <EntityTypeShape EntityType="HM2Model.Address" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.Admin" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.Area" Width="1.5" PointX="4.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.Cart" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.Comment" Width="1.5" PointX="8.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.Order" Width="1.5" PointX="9" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.OrderDetail" Width="1.5" PointX="11.25" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.Product" Width="1.5" PointX="6" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.ProductColor" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.ProductImg" Width="1.5" PointX="8.25" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.ProductSize" Width="1.5" PointX="3.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.ProductType" Width="1.5" PointX="3.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HM2Model.User" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
+        <AssociationConnector Association="HM2Model.FK__Address__AreaId__164452B1" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Address__UserId__15502E78" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Order__AddressId__31EC6D26" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Area__ParentId__1273C1CD" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Cart__ProductCol__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Cart__ProductId__2C3393D0" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Cart__ProductSiz__2D27B809" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Cart__UserId__2B3F6F97" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Comment__Product__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Comment__UserId__286302EC" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Order__UserId__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__OrderDeta__Order__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__OrderDeta__Produ__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Product__ColorId__20C1E124" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Product__SizeId__21B6055D" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__Product__TypeId__1FCDBCEB" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__ProductIm__Produ__24927208" ManuallyRouted="false" />
+        <AssociationConnector Association="HM2Model.FK__ProductType__Pid__1CF15040" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

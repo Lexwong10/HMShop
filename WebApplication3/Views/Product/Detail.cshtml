@@ -1,0 +1,145 @@
+﻿@model  Model.Product
+ @{ 
+
+     Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+ }
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Detail</title>
+    <style>
+        body {
+            width:1200px;
+            
+        }
+        h3,h4 {
+            margin:0;
+        }
+        .detailContent {
+            width:830px;
+            overflow:hidden;
+            float:left;
+        }
+        .imgtop2 {
+            float:left;
+            margin-left:10px;
+            margin-bottom:10px;
+        }
+        .clear {
+            clear:both;
+        }
+        .left {
+            float:left;
+        }
+        .text {
+            width:800px;
+            height:80px;
+            text-align:center;
+            padding:10px 10px 10px 10px;
+            float:left;
+        }
+        .textinner {
+            max-width:600px;
+            margin:0 auto;
+        }
+        .ProductInfo {
+            width:300px;
+            position:relative;
+            float:left;
+            margin-left:30px;
+            padding-top:30px;
+            text-align:left;
+        }
+        .ProductColor {
+            margin-top:40px;
+            font-size:small;
+        }
+        .ProductSize > select {
+            width:260px;
+            height:30px;
+            margin-top:30px;
+        }
+        .AddCart {
+            margin-top:10px;
+        }
+            .AddCart > input {
+            width:260px;
+            height:30px;
+            background:#000000;
+            text-align:center;
+            color:white;
+            border:0 none;
+            cursor:pointer;
+            }
+        .clear {
+            clear:both;
+        }
+    </style>
+    <script src="~/scripts/jquery.min.js"></script>
+    <script>
+        $(function () {
+            console.log($('.ProductColor').next().html);
+        });
+    </script>
+</head>
+<body>
+    <div class="body">
+        <form action="~/Cart/Add" method="post" id="fromDetail">
+            <input type="hidden" name="ProductId" value="@Model.Id" />
+            <input type="hidden" name="ProductColorId" value="@Model.ColorId" />
+            @{
+                List<Model.ProductImg> ImgList = Model.ProductImg.ToList();
+                List<Model.Product> Product = Model.ProductSize.Product.ToList();
+            }
+            <div class="detail">
+                <div class="detailContent">
+                    @for (int i = 0; i < ImgList.Count(); i++)
+            {
+                if (i == 2)
+                {
+                            <div class="text">
+                                <div class="textinner">
+                                    <span>@Model.Detail</span>
+                                </div>
+                            </div>
+
+                        }
+                        <div class="imgtop2">
+                            <img src="~/Images/ProductImg/@ImgList[i].BigImage" style="width:398px;height:599px; " />
+                        </div>
+                    }
+                </div>
+                <div class="ProductInfo">
+                    <div class="ProductName">
+                        <h3>@Model.Name</h3>
+                    </div>
+                    <div class="ProductPrice">
+                        <h4>￥@String.Format("{0:0.00}",Model.OldPrice)</h4>
+                    </div>
+                    <div class="ProductColor">
+                        <p>@Model.ProductColor.Name</p>
+                        <img src="~/Images/ProductImg/@ImgList[4].BigImage" style="width:50px;height:60px;" />
+                    </div>
+                    <div class="ProductSize">
+                        <select name="ProductSizeId">
+                            <option value="0">选择尺码</option>
+                            <option value="1">S</option>
+                            <option value="2">M</option>
+                            <option value="3">L</option>
+                            <option value="4">XL</option>
+                            <option value="5">XXL</option>
+                            <option value="6">XXXL</option>
+                        </select>
+                    </div>
+                    <div class="AddCart">
+                        <input type="submit" value="加入购物车" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="clear"></div>
+    </div>
+</body>
+</html>

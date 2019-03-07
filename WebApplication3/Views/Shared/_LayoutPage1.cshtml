@@ -1,0 +1,433 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        div {
+            display:block;
+        }
+        a {
+            text-decoration:none;
+            color:#1a1a1a;
+            cursor:pointer;
+        }
+        ul {
+            display: block;
+            list-style:none;
+        }
+        #session-menu {
+            float:right;
+            text-align:right;
+            position:relative;
+            width:100%;
+            font-size:small;
+            font-weight:300;
+        }
+            #session-menu > a {
+                margin-left:15px;
+            }
+        #Logo {
+            background-image:url("../../Images/Logo/hmlogo.jpg");
+            width:80px;
+            height:80px;
+            margin:0 auto;
+            background-repeat:no-repeat;
+        }
+        #Nav {
+            margin: 0 auto;
+            text-align:center;
+        }
+        #TypeMenu {
+            border-bottom:1px solid #808080;
+            margin-bottom:10px;
+        }
+        #TypeMenu > ul {
+            padding-left:0px;
+            list-style-type:none;
+            display:inline-block;
+        }
+        #TypeMenu>ul>li {
+            margin-left:40px;
+            display:inline-block;
+        }
+        .foot {
+            background:#1a1a1a;
+            padding:40px 0 0 0;  
+        }
+        .footmenu {
+            color:#dadada;
+            text-align:left;
+            
+        }
+            .footmenu > ul {
+                padding-left:0;
+                margin:0;
+                font-size:small;  
+            }
+        .footcopyright {
+            margin: 0 auto;
+            text-align:center;
+            color:#dadada;
+            font-size:x-small;  
+            width:700px;
+        }
+        .footlogo {
+             margin: 0 auto;
+             text-align:center;
+        }
+        .loginandjoin {
+            font-weight:unset;
+            background:#ffffff;
+            border:1px solid #c8c8c8;
+            padding:20px;
+            position:absolute;
+            right:0;
+            text-align:left;
+            top:0;
+            z-index:16;
+            margin-top:20px;
+            display:none;
+            margin-right:100px;
+        }
+        .inner {
+            width:260px;
+        }
+        #register {
+            display:none;
+        }
+        .fieidset {
+            margin:0;
+            padding:0;
+            border:0 none;
+            font-size:small;
+            font-weight:bold;
+        }
+        .inputwapperoption {
+            float:left;
+        }
+        .button1 {
+            width:250px;
+            height:30px;
+            background:#000000;
+            color:#ffffff;
+            margin-top:20px;
+            border:0 none;
+            cursor:pointer;
+        }
+        .inputwapperjoin {
+            width:250px;
+            margin:20px 0 0;
+            padding-top:20px;
+            border-top:1px solid #c8c8c8;
+        }
+        .button2 {
+            width:250px;
+            height:30px;
+            border:2px solid #1a1a1a;
+            background:#ffffff;
+            cursor:pointer;
+            
+        }
+        .slideup {
+            width:250px;
+            height:25px;
+            background:#d8d7d7;
+            font-weight:bold;
+            opacity:0.5;
+            color:#808080;
+            border:0 none;
+        }
+        #layout {
+            margin: 0 auto;
+            width: 100%;
+            overflow:hidden;
+        }
+    </style>
+    <script src="~/scripts/jquery.min.js"></script>
+    <script>
+    </script>
+</head>
+<body>
+    <div class="head">
+        <div id="session-menu">
+            @if (Session["user"] != null)
+            {
+                <a href="/User/MyAccount">我的H&M</a>
+                <a id="logout" href="/User/Logout">退出</a>
+            }
+            else
+            {
+                <a href="/User/Login">我的H&M</a>
+                <a id="log" onclick="showlogin()">登录/加入</a>
+            }
+            <a>H&M Club</a>
+            <div class="loginandjoin">
+                <div class="inner">
+                    <!--登陆-->
+                    <div id="login">
+                        <form action="/User/Login" method="post" id="loginForm1">
+                            <fieldset class="fieidset">
+                                <legend>登陆</legend>
+                            </fieldset><br />
+                            <div class="inputwapper">
+                                <label class="label">
+                                    电子邮箱:
+                                </label><br />
+                                <input type="text" name="Email" id="loginEmail1"/>
+                                <div>请输入您的电子邮箱</div>
+                            </div><br />
+                            <div class="inputwapper">
+                                <label class="label">
+                                    密码:
+                                </label><br />
+                                <input type="text" name="Password" id="loginPasswordl1"/>
+                            </div>
+                            <div class="inputwapperoption">
+                                <input type="checkbox" />保持我的登录状态
+                            </div><br />
+                            <div class="loginsubmit">
+                                <input type="submit" class="button1" value="登陆" />
+                            </div>
+                            <div class="inputwapperjoin">
+                                <input type="button" value="加入我们" onclick="showregister()"  class="button2" />
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--注册-->
+                    <div id="register">
+                        <form action="/User/Register" method="post" id="signupregister_form">
+                            <fieldset class="fieidset">
+                                <legend>创建H&M账户</legend>
+                            </fieldset><br />
+                            <div class="inputwapper">
+                                <label class="label">
+                                    电子邮件:
+                                </label><br />
+                                <input type="text" name="Email" id="input_register_email" autocomplete="off" />
+                                <div style="color:red; display:none ">请输入有效的电子邮箱</div>
+                                <div style="color:red; display:none ">您输入的邮箱已存在</div>
+                                <div>请输入您的电子邮箱</div>
+                            </div><br />
+                            <div class="inputwapper">
+                                <label class="label">
+                                    昵称:
+                                </label><br />
+                                <input type="text" name="Nickname" id="input_register_nickname" autocomplete="off" />
+                            </div><br />
+                            <div class="inputwapper">
+                                <label class="label">
+                                    密码:
+                                </label><br />
+                                <input type="password" name="Password" id="input_register_password" />
+                                <div style="color:red; display:none">请必须确认您的密码</div>
+                            </div><br />
+                            <div class="inputwapper">
+                                <label class="label">
+                                    确认密码:
+                                </label><br />
+                                <input type="password" name="ConfirmPassword" id="input_register_Confirmpassword" />
+                                <div style="color:red; display:none">请必须确认您的密码</div>
+                            </div><br />
+                            <div class="inputwapper">
+                                <label class="label">
+                                    验证码:
+                                </label>
+                                <br />
+                                <input type="text" name="Captcha" id="input_register_Captcha" autocomplete="off" /><br />
+                                <div id="CaptchaImg" style="margin-top:5px;"><img src="~/User/CheckCaptcha" onclick="$(this).prop('src',$(this).attr('src')+'?'+new Date().getTime())" /></div>
+                                <div style="color:red; display:none">您输入的验证码有误</div>
+                            </div><br />
+                            <div class="loginsubmit">
+                                <input type="submit"  class="button1" value="加入我们" />
+                            </div>
+                            <div class="inputwapperjoin">
+                                <input type="button" value="返回到登陆" class="button2" onclick="backtologin()"/>
+                            </div>
+                        </form>
+                    </div>
+                </div><br />
+                <input type="button" value="收起" class="slideup" onclick="slideup()"/>
+        </div>
+            <a>收藏</a>
+            <a href="~/Cart/List">购物袋<span style="font-weight:bold"> (@if (ViewBag.cartCount != null)
+            { <text>@ViewBag.cartCount</text> }
+            else
+            {<text>0</text> })</span></a>
+</div><br />
+
+<script src="~/scripts/jquery.min.js"></script>
+<script>
+
+            function slideup() {
+            $('.loginandjoin').slideUp(300);
+            }
+
+            function backtologin() {
+            $('#register').hide();
+            $('#login').show();
+            }
+
+            function showregister() {
+            $('#login').hide();
+            $('#register').show();
+            }
+
+            function showlogin() {
+            $('.loginandjoin').slideDown(300);
+            }
+
+            //判断登陆表信息
+            void function (loginForm1) {
+                function checkLogin() {
+                    var loginEmail = $('#loginEmail1').val();
+                    var loginPassword = $('#loginPassword1').val();
+
+                    var usernameRegExp = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
+
+                    if (loginEmail == '' || !usernameRegExp.test(input_register_email)) {
+                        $('#loginEmail1').next().show();
+                        return false;
+                    } else {
+                        $('#loginEmail1').next().hide();
+                    }
+                }
+
+                loginForm1.on('submin', function (e) {
+                    e.stopPropagation();
+                    checkLogin();
+
+                    $.post('/User/AjaxLogin', loginForm1.serialize(), function (data) {
+                        console.log(data);
+                        if (data.Result == 1) {
+                            if (data.ErrorTips == '用户名或密码错误') {
+                                return false;
+                            }
+                        }
+
+                        if (checkLogin != false) {
+                            $.post('/User/Login', loginForm1.serialize(), function () {
+                                window.location.href = '/Index/Index';
+                            });
+                        };
+                    });
+                    return false;
+                });
+            }($('#loginForm'));
+
+
+            //判断注册表信息
+            void function (signupregister_form) {
+                function checklogin() {
+                    var input_register_email = $('#input_register_email').val();
+                    var input_register_password = $('#input_register_password').val();
+                    var input_register_Confirmpassword = $('#input_register_Confirmpassword').val();
+
+                    var usernameRegExp = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
+
+            //判断邮箱是否正确
+                    if (input_register_email == '' || !usernameRegExp.test(input_register_email)) {
+                    $('#input_register_email').next().show();
+                        return false;
+                    } else {
+                    $('#input_register_email').next().hide();
+                    }
+
+                    //判断密码是否为空
+                    if (input_register_password == '') {
+                $('#input_register_password').next().show();
+                        return false;
+                    } else {
+                $('#input_register_password').next().hide();
+                    }
+
+                    //判断确认密码是否为空
+                    if (input_register_Confirmpassword == '') {
+                $('#input_register_Confirmpassword').next().show();
+                        return false;
+                    } else {
+                $('#input_register_Confirmpassword').next().hide();
+                    }
+
+                    //判断两次密码输入是否相同
+                    if (input_register_Confirmpassword != input_register_password) {
+                $('#input_register_Confirmpassword').next().show();
+                        return false;
+                    } else {
+                $('#input_register_Confirmpassword').next().hide();
+                    }
+                }
+
+                signupregister_form.on('submit', function (e) {
+                    e.stopPropagation();
+                    checklogin();
+
+                $.post('/User/AjaxRegister', signupregister_form.serialize(), function (data) {
+                        console.log(data);
+
+                        //错误Ajax提醒
+                        if (data.Result == 1) {
+                            //错误显示验证码信息
+                            if (data.ErrorTips == '验证码错误') {
+                            $('#CaptchaImg').next().show();
+                                return false;
+                            } 
+                            $('#CaptchaImg').next().hide();
+
+                            if (data.ErrorTips == '用户名已存在') {
+                            $('#input_register_email').next().next().show();
+                                return false;
+                            } 
+                            $('#input_register_email').next().hide();
+                        }
+                        //正确，移除错误信息，提交表单
+                        if (data.Result == 0) {
+                        $('#CaptchaImg').next().hide();
+                        $('#input_register_email').next().next().hide();
+                        }
+                        //提交表单
+                        if (checklogin != false) {
+                        $.post('/User/Register', signupregister_form.serialize(), function () {
+                                window.location.href = '/Index/Index';
+                            })
+                    }
+                    });  
+                }, 'json');
+                return false;
+            }($('#signupregister_form'));
+
+    </script>
+
+        <a href="/Index/Index"><div id="Logo"></div></a>
+        <div id="Nav">
+            <div id="TypeMenu">
+                <ul>
+                    <a href="~/Product/List"><li>女士</li></a>
+                </ul>
+            </div>
+        </div>
+        <div>
+        </div>
+    </div>
+    <div id="layout">
+        @RenderBody()
+    </div>
+    <div class="foot">
+        <div class="footcopyright">
+            <p>H&M的经营理念：以可持续的方式和优惠的价格提供时尚与品质。自从1947年成立以来，H&M已成长为一家世界领先的时尚公司。本网站上的内容归H & M Hennes & Mauritz AB所有，受到版权保护。</p>
+        </div>
+        <div class="footlogo">
+            <img src="~/Images/Logo/hmlogoblack.png" />
+        </div>
+    </div>
+</body>
+</html>

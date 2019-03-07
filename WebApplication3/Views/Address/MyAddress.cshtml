@@ -1,0 +1,381 @@
+﻿@using Model
+@model List<Address>
+@{
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+    int count = 1;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MyAddress</title>
+    <link rel="stylesheet" href="~/Contents/bootstrap.min.css" />
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <style>
+        a {
+            color:#1a1a1a;
+        }
+        h5 {
+            margin:0 0 15px 0;
+        }
+        .navAccout {
+            margin:0 auto;
+            text-align:center;
+            width:1400px; 
+            border-bottom:1px solid #dadada;
+            height:45px;
+        }
+         #navAccoutMenu> li {
+                margin-right:50px;
+         }
+          .body {
+            width:700px;
+        }
+        .title {
+            margin-top:40px;
+        }
+        .addressDetail {
+            width:700px;
+            border:2px solid #1a1a1a;
+            padding:10px;
+        }
+        .change {
+            margin-top:10px;
+            margin-bottom:50px;
+        }
+        .change > button {
+            font:small;
+            width:80px;
+            height:30px;
+            margin-right:10px;
+            border:0 none;
+        }
+        .add {
+            margin-bottom:30px;
+            margin-top:20px;
+        }
+            .add > button {
+            font:x-small;
+            width:100px;
+            height:30px;
+            border:0 none;
+            }
+        .editForm {
+            margin-top:20px;
+        }
+    </style>
+    <script>
+        $.ajaxSettings.async = false;
+        //筛选地区
+        function getCity2(obj) {
+            $('option').remove('.city2');
+            $('.city2values').next().hide();
+            $.post('/Area/List', { 'AreaId': $(obj).val() }, function (data) {
+                $(data).each(function (i, e) {
+                    var option = '<option class = "city2" value="' + e.Id + '">' + e.AreaName + '</option>';
+                    $('.city2values').append(option);
+                });
+            });
+        };
+
+        function getCity3(obj) {
+            $('option').remove('.city3');
+            $(obj).next().show();
+            $.post('/Area/List', { 'AreaId': $(obj).val() }, function (data) {
+                $(data).each(function (i, e) {
+                    var option = '<option class = "city3" value="' + e.Id + '">' + e.AreaName + '</option>';
+                    $('.city3values').append(option);
+                });
+            });
+        };
+
+        function getCity4(obj) {
+            $('option').remove('.city4');
+            $('#city4').next().hide();
+            $.post('/Area/List', { 'AreaId': $(obj).val() }, function (data) {
+                $(data).each(function (i, e) {
+                    var option = '<option class = "city4" value="' + e.Id + '">' + e.AreaName + '</option>';
+                    $('#city4').append(option);
+                });
+            });
+        };
+
+        function getCity5(obj) {
+            $('option').remove('.city5');
+            $(obj).next().show();
+            $.post('/Area/List', { 'AreaId': $(obj).val() }, function (data) {
+                $(data).each(function (i, e) {
+                    var option = '<option class = "city5" value="' + e.Id + '">' + e.AreaName + '</option>';
+                    $('#city5').append(option);
+                });
+            });
+        };
+
+        //增加地址
+        function save() {
+            var receiver = $('#receiver').val();
+            var addressAdd = $('#addressAdd').val();
+
+            if (receiver == '') {
+                $('#receiver').next().show();
+                return false;
+            } else {
+                $('#receiver').next().hide();
+            }
+
+            if (addressAdd == '') {
+                $('#addressAdd').next().show();
+                return false;
+            } else {
+                $('#addressAdd').next().hide();
+            }
+            $('#addAddressForm').hide();
+        }
+
+        //显示填写地址表
+        function showAddForm() {
+            $('#addAddressForm').show();
+            $('#add').hide();
+        }
+
+        //隐藏填写地址表
+        function hideAddForm() {
+            $('#addAddressForm').slideUp(300);
+            $('#add').show();
+        }
+        
+        //编辑地址表
+        function edit(obj){
+            $('#addressDetail_' + obj).hide();
+            $('#editDetail_' + obj).show();
+            $('.edit').hide();
+        }
+
+        //删除地址
+        function deleteAdd(obj){
+            $.get('/Address/DeleteAddress',{Id : obj},function(data){
+                location.href='/User/MyAddress';
+            });
+        }
+
+        //取消按钮
+        function cancel(obj){
+            $('#editDetail_' + obj).hide();
+            $('#addressDetail_' + obj).show();
+            $('.edit').show();
+        }
+
+      
+
+    </script>
+</head>
+<body>
+    <div class="contianer">
+        <div class="navAccout row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <ul id="navAccoutMenu" class="nav nav-pills">
+                    <li><a href="/User/MyAccount">概况</a></li>
+                    <li><a href="/User/MyProfile">个人信息</a></li>
+                    <li><a href="/Order/MyOrder" >订单</a></li>
+                    <li><a href="/Address/MyAddress" style="text-decoration:underline">地址簿</a></li>
+                    <li><a href="#">银行卡信息</a></li>
+                    <li><a href="#">我的设置</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 body">
+                <div class="title">
+                    <h4>地址簿</h4>
+                    <p>您可在结帐页添加新地址。</p>
+                </div>
+                @foreach (var address in Model)
+                {
+                    count++;
+                <div class="addressDetail" id="addressDetail_@address.Id">
+                    <h3>邮件地址:@count</h3>
+                    <label>姓名</label>
+                    <p>@address.Receiver</p>
+                    <label>省份</label>
+                    <p>@address.Area.Area2.Area2.AreaName</p>
+                    <label>城市</label>
+                    <p>@address.Area.Area2.AreaName</p>
+                    <label>区域</label>
+                    <p>@address.Area.AreaName</p>
+                    <label>地址栏</label>
+                    <p>@address.Address1</p>
+                    <label>电话号码</label>
+                    <p>@address.Phone</p>
+                    <input type="checkbox"  @if (address.Default == true) {<text>checked="checked"</text> }>&nbsp;
+                    <span>默认地址</span>
+                </div>
+                <div class="change edit">
+                    <button onclick="edit(@address.Id)" style="background:#1a1a1a;color:white;">编辑地址</button>
+                    <button onclick="deleteAdd(@address.Id)" style="background:#ffffff;border:1px solid #1a1a1a;">删除地址</button>
+                </div>
+                @*修改地址*@
+                    <form class="editForm" id="editDetail_@address.Id" role="form" action="/Address/Edit" method="get" style="display:none;">
+                        <input type="hidden" name="Id" value="@address.Id" />
+                        <div class="addressDetail">
+                            <h3>邮件地址:@count</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name">姓名</label>
+                                        <input type="text" class="form-control" name="Receiver" value="@address.Receiver">
+                                    </div>
+                                    @*一级地区*@
+                                    <div class="form-group">
+                                        <label for="name">省份</label><br />
+                                        <select onclick="getCity2(this);" class="form-control" style="width:150px;">
+                                            @foreach (var area in ViewBag.Areas as List<Area>)
+                                            {
+                                                <option value="@area.Id" @if (address.Area.Area2.Area2.Id == area.Id) { <text> selected="selected" </text>    }>@area.AreaName</option>
+                                            }
+                                        </select>
+                                        @*二级地区*@
+                                        <label for="name">城市</label><br />
+                                        <select onclick="getCity3(this);"  class="form-control city2values" style="width:150px;">
+                                            @foreach (var area in ViewBag.Areas as List<Area>)
+                                            {
+                                                foreach (var area1 in area.Area1)
+                                                {
+                                                    <option class="city2" value="@area1.Id" @if (address.Area.Area2.Id == area1.Id) { <text> selected="selected" </text>  }>@area1.AreaName</option>
+                                                }
+                                            }
+                                        </select>
+                                        @*三级地区*@
+                                        <div>
+                                            <label for="name">区域</label><br />
+                                            <select  class="form-control city3values" style="width:150px;" name="AreaId">
+                                                @foreach (var area in ViewBag.Areas as List<Area>)
+                                                {
+                                                    foreach (var area1 in area.Area1)
+                                                    {
+                                                        foreach (var area2 in area1.Area1)
+                                                        {
+                                                            <option class="city3" value="@area2.Id" @if (address.Area.Id == area2.Id) { <text> selected="selected" </text>     }>@area2.AreaName</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="name">地址栏</label><br />
+                                        <input type="text" class="form-control" name="Address1" value="@address.Address1">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="name">电话号码</label><br />
+                                        <input type="text" class="form-control" name="Phone" value="@address.Phone">
+                                    </div>
+
+                                    <input type="checkbox" name="isDefault" @if (address.Default == true) { <text> checked="checked" </text>    }>&nbsp;
+                                    <span>默认地址</span>
+
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>
+                        </div>
+
+                        <div class="change">
+                            <button type="button" onclick="cancel(@address.Id);" class="cancel" style="background:#ffffff;border:1px solid #1a1a1a;">取消</button>
+                            <button type="submit" id="save_@address.Id" style="background:#1a1a1a;color:white;">保存信息</button>
+                        </div>
+                    </form>
+                } 
+
+                @*增加地址*@
+                <form id="addAddressForm" role="form" action="/Address/Add" method="post" onsubmit="return save();" style="display:none;">
+                    <div class="addressDetail" id="addDetail">
+                        <h3>增加地址</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name">姓名</label>
+                                    <input id="receiver" type="text" class="form-control" name="Receiver">
+                                    <div class="text-danger" style="display:none">姓名不能为空</div>
+                                </div>
+                                @*一级地区*@
+                                <div class="form-group">
+                                    <label for="name">省份</label><br />
+                                    <select onclick="getCity4(this);" class="form-control" style="width:150px;">
+                                        @foreach (var area in ViewBag.Areas as List<Area>)
+                                        {
+                                            <option value="@area.Id" >@area.AreaName</option>
+                                        }
+                                    </select>
+                                    @*二级地区*@
+                                    <label for="name">城市</label><br />
+                                    <select onclick="getCity5(this);" id="city4" class="form-control" style="width:150px;">
+                                        @foreach (var area in ViewBag.Areas as List<Area>)
+                                        {
+                                            foreach (var area1 in area.Area1)
+                                            {
+                                                <option class="city4" value="@area1.Id">@area1.AreaName</option>
+                                            }
+                                        }
+                                    </select>
+                                    @*三级地区*@
+                                    <div>
+                                        <label for="name">区域</label><br />
+                                        <select id="city5" class="form-control" style="width:150px;" name="AreaId">
+                                            @foreach (var area in ViewBag.Areas as List<Area>)
+                                            {
+                                                foreach (var area1 in area.Area1)
+                                                {
+                                                    foreach (var area2 in area1.Area1)
+                                                    {
+                                                        <option class="city5" value="@area2.Id">
+                                                            @area2.AreaName
+                                                    </option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name">地址栏</label><br />
+                                    <input id="addressAdd" type="text" class="form-control" name="Address1" >
+                                    <div class="text-danger" style="display:none">地址不能为空</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name">电话号码</label><br />
+                                    <input id="addressAdd" type="text" class="form-control" name="Phone">
+                                    <div class="text-danger" style="display:none">电话号码不能为空</div>
+                                </div>
+
+                                <input type="checkbox" name="Default" >&nbsp;
+                                <span>默认地址</span>
+
+                            </div>
+                            <div class="col-md-6"></div>
+                        </div>
+                    </div>
+                    <div class="change">
+                        <button onclick="hideAddForm()" class="cancel" style="background:#ffffff;border:1px solid #1a1a1a;">取消</button>
+                        <button type="submit" style="background:#1a1a1a;color:white;">保存信息</button>
+                    </div>
+                </form>
+                <div class="add">
+                    <button id="add" onclick="showAddForm();"  style="background:#1a1a1a;color:white;">添加新地址</button>
+                </div>
+            </div>
+            
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</body>
+</html>

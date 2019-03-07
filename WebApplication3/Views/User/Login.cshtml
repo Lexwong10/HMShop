@@ -1,0 +1,109 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>login</title>
+    <link rel="stylesheet" href="~/Contents/bootstrap.min.css" />
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+
+    <style>
+        a {
+            color:#1a1a1a;
+        }
+        .body {
+            margin-bottom:50px;
+        }
+        .button {
+            color:white;
+            background:#1a1a1a;
+        }
+    </style>
+    <script>
+        void function (loginForm) {
+            function checkLogin() {
+                var loginEmail = $('#loginEmail').val();
+                var loginPassword = $('#loginPassword').val();
+
+                var usernameRegExp = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
+
+                if (loginEmail == '' || !usernameRegExp.test(input_register_email)) {
+                    $('#loginEmail').next().show();
+                    return false;
+                } else {
+                    $('#loginEmail').next().hide();
+                }
+            }
+
+            loginForm.on('submin', function (e) {
+                e.stopPropagation();
+                checkLogin();
+
+                $.post('/User/AjaxLogin', loginForm.serialize(), function (data) {
+                    console.log(data);
+                    if (data.Result == 1) {
+                        if (data.ErrorTips == '用户名或密码错误') {
+                            return false;
+                        }
+                    }
+
+                    if (checkLogin != false) {
+                        $.post('/User/Login', loginForm.serialize(), function () {
+                            window.location.href = '/Index/Index';
+                        });
+                    };
+                });
+            }, 'json');
+            return false;
+        }($('#loginForm'));
+    </script>
+</head>
+<body>
+    <div class="container body">
+        <div class="row">
+            <div class="col-md-3"></div>
+            @*登陆部分*@
+            <div class="col-md-3">
+                <form id="loginForm"  role="form" class="signup" action="/User/Login" method="post">
+                    <label id="alertTips" class="text-danger" style="display:none;">用户名或密码错误!</label>
+                    <h4>登陆</h4>
+                    <h4>老用户</h4>
+                    <p>欢迎回来！请登录以享受快速结账服务。</p>
+                    <div class="form-group">
+                        <label for="name">电子邮箱</label>
+                        <input type="text" class="form-control" id="loginEmail" name="Email" placeholder="请输入电子邮箱">
+                        <div style="color:red; display:none ">请输入有效的电子邮箱</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">密码</label>
+                        <input type="password" class="form-control" id="loginPassword" name="Password" placeholder="请输入密码">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="rememberMe">保持我的登录状态
+                        </label>
+                    </div>
+                    <div class="loginsubmit">
+                        <button type="submit" class="btn btn-default button" style="margin:0;">登陆</button>
+                    </div>
+            </form>
+            </div>
+            @*注册部分*@
+            <div class="col-md-3">
+                <h4></h4>
+                <h4>新客户</h4>
+                <span>创建账户，让购物更轻松流畅！</span>
+               <br />
+                <a href="/User/Register" role="button" class="btn btn-default" style="margin-top:30px; width:240px;border: 2px solid #1a1a1a">加入我们</a>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</body>
+</html>

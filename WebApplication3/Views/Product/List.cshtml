@@ -1,0 +1,175 @@
+﻿@using Model
+@model List<Product>
+@{
+    var currentProductType = ViewBag.CurrentProductType as ProductType;
+    var PageSize = ViewBag.PageSize;
+    var allPage = ViewBag.TotalPages;
+    var currentPage = ViewBag.Page;
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link rel="stylesheet" href="~/Contents/bootstrap.min.css" />
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+
+    <style>
+        a {
+            color:#1a1a1a;
+        }
+        .productType {
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+
+        .imgA:hover {
+            text-decoration:none;
+        }
+
+        .Good {
+            margin: 5px 5px 5px 5px;
+            width:350px;
+            text-align:center;
+        }
+    </style>
+    <script src="~/scripts/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('#order').change(function () {
+                orderId = $(this).val();
+                order(orderId);
+            });
+        });
+
+        function order(orderId) {
+            $('input[name=OrderId]').val(orderId);
+            $('#formProductList').submit();
+        };
+
+        function ProductType(TypeId) {
+            $('input[name=TypeId]').val(TypeId);
+            $('#formProductList').submit();
+        };
+
+        function Page(PageId) {
+            $('input[name=Page]').val(PageId);
+            $('#formProductList').submit();
+        }
+
+        function active() {
+            $('.level2').slideToggle(0);
+        }
+
+        function hold() {
+            $('.level2').css('display', 'block');
+        }
+
+    </script>
+</head>
+<body>
+    <form action="~/Product/List" method="get" id="formProductList" style="display:none">
+        <input type="hidden" name="TypeId" value="@Request.QueryString["TypeId"]" />
+        <input type="hidden" name="OrderId" value="@Request.QueryString["OrderId"]" />
+        <input type="hidden" name="Page" value="1" />
+    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="productType">
+                    @{var ProductType = ViewBag.ProductType;
+                    }
+                    @foreach (var t in ProductType)
+                    {
+                        <ul>
+                            <li>
+                                <a class="level1" onclick="active(this);">@t.Name</a>
+                                @foreach (var tt in t.ProductType1)
+                                {
+                                    <ul class="level2"  style="display:none;">
+                                        <li>
+                                            <a onclick="hold();" href="javascript:ProductType(@tt.Id)">@tt.Name</a>
+                                        </li>
+                                    </ul>
+                                }
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+            <div class="col-md-9" >
+                <div class="range">
+                    @if (currentProductType != null)
+                    {
+                        <h4>@currentProductType.ProductType2.Name - @currentProductType.Name</h4>
+                    }
+                    else
+                    {
+                        <h4>所有商品</h4>
+                    }
+                    <div>
+                        <div>
+                            <select id="order">
+                                <option value="1">
+                                    分类方式
+                                </option>
+                                <option value="2" @if(ViewBag.OrderId == 2) {<text>selected="selected"</text>}>
+                                    销量按高到低
+                                </option>
+                                <option value="3"@if(ViewBag.OrderId == 3) {<text>selected="selected"</text>}>
+                                    价格升序
+                                </option>
+                                <option value="4"@if(ViewBag.OrderId == 4) {<text>selected="selected"</text>}>
+                                    价格降序
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9" >
+                <div class="row">
+                        @foreach (var p in Model)
+            {
+                            <div class="show col-md-6" >
+                                <div class="Good">
+                                    <a class="imgA" href="~/Product/Detail/@p.Id">
+                                        <img src="../Images/ProductImg/@p.ProductImg.FirstOrDefault().BigImage" style="width:232px;height:348px;" />
+                                    </a>
+                                        <br />
+                                        <a href="~/Product/Detail/@p.Id">@p.Name</a><br />
+                                        <span>￥@String.Format("{0:0.00}", p.OldPrice)</span>
+</div>
+                            </div>
+                        }
+                </div>
+        </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-9" >
+            <div>
+                <ul class="pagination">
+                    @for (int i = 1; i <= allPage; i++)
+                    {
+                            if (i == currentPage)
+                            {
+                            <li class="active">@i</li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="javascript:Page(@i)">@i</a>
+                                </li>
+                            }
+                    }
+                </ul>
+            </div>
+
+        </div>
+     </div>
+ </div>
+</body>
+</html>

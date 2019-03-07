@@ -1,0 +1,130 @@
+﻿@model Model.User
+@{
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MyProfile</title>
+    <link rel="stylesheet" href="~/Contents/bootstrap.min.css" />
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <style>
+        a {
+            color:#1a1a1a;
+        }
+         h5 {
+            margin:0 0 15px 0;
+        }
+        .navAccout {
+            margin:0 auto;
+            text-align:center;
+            width:1400px; 
+            border-bottom:1px solid #dadada;
+            height:45px;
+        }
+         #navAccoutMenu> li {
+                margin-right:50px;
+         }
+        .body {
+            width:700px;
+        }
+        .detail {
+            width:700px;
+            border:2px solid #1a1a1a;
+            padding:10px;
+            margin-top:20px;
+        }
+        .edit {
+            width:700px;
+            border:2px solid #1a1a1a;
+            padding:10px;
+            margin-top:20px;
+        }
+        .profileClient {
+            margin-top:20px;
+            margin-bottom:20px;
+        }
+        .edit {
+            margin:10px 0 10px 0;
+        }
+    </style>
+    <script>
+        function edit() {
+            $('#edit').show();
+            $('.detail').hide();
+        }
+
+        function cancel() {
+            $('.detail').show();
+            $('#edit').hide();
+        }
+    </script>
+</head>
+<body>
+    <div class="contianer">
+        <div class="navAccout row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <ul id="navAccoutMenu" class="nav nav-pills">
+                    <li><a href="/User/MyAccount">概况</a></li>
+                    <li><a href="/User/MyProflie" style="text-decoration:underline">个人信息</a></li>
+                    <li><a href="/Order/MyOrder">订单</a></li>
+                    <li><a href="/Address/MyAddress">地址簿</a></li>
+                    <li><a href="#">银行卡信息</a></li>
+                    <li><a href="#">我的设置</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 body">
+                <div class="detail">
+                    <h4>个人信息</h4>
+                    <a onclick="edit();" style="color:cornflowerblue">编辑</a><br /><br />
+                    <label>电子邮箱</label>
+                    <p>@Model.Email</p>
+                    <label>昵称</label>
+                    <p>@Model.Nickname</p>
+                    <label>出生日期</label>
+                    <p>1990-01-01</p>
+                    <label>电话号码</label>
+                    <p>1360000000</p>
+                    <label>性别</label>
+                    <p>女</p>
+                    <label>地区及语言</label>
+                    <p>中国</p>
+                </div>
+                <form id="edit" action="/User/Edit" method="post" style="display:none">
+                    <div class="edit">
+                        <h4>个人信息</h4>
+
+                        <div class="form-group">
+                            <label for="name">电子邮件</label><br />
+                            <input type="text" class="form-control" name="Email" value="@Model.Email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">昵称</label><br />
+                            <input type="text" class="form-control" name="Nickname" value="@Model.Nickname">
+                        </div>
+                    </div>
+
+                    <div class="editBtn" >
+                        <button class="cancel" style="background:#ffffff;border:1px solid #1a1a1a;">取消</button>
+                        <button type="submit" style="background:#1a1a1a;color:white;">保存信息</button>
+                    </div>
+                </form>
+                <div class="profileClient"><span>H&M将根据H&M的隐私声明处理您的个人信息</span></div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+
+   </div>
+</body>
+</html>
