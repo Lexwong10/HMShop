@@ -77,6 +77,8 @@ namespace WebApplication3.Controllers
             return RedirectToAction("MyAddress");
         }
 
+
+        //AddressId 在订单中有外键存在，所以无法删除
         //删除地址
         [HttpGet]
         public ActionResult DeleteAddress(Address address) {
