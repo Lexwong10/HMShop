@@ -52,16 +52,17 @@ namespace WebApplication3.Controllers
                     break;
             }
 
-            Expression<Func<Product, bool>> whereExpression = p => true;
+            Expression<Func<Product, bool>> whereExpression = p => p.OnSale ==1;
             if (TypeId != null)
             {
-                whereExpression = p => p.TypeId == TypeId;
+                whereExpression = p => p.TypeId == TypeId || p.ProductType.ProductType2.Id == TypeId &&p.OnSale == 1;
+                ViewBag.CurrentProductType = ProductType.GetById(TypeId) ;
             }
 
-            var ProductCount = productBLL.GetCount(whereExpression);
+            var ProductCount = productBLL.GetBySituation(whereExpression).Count();
             var totalPages =  Math.Ceiling(ProductCount * 1.0 / PAGE_SIZE);
             ViewBag.TotalPages = totalPages;
-
+            
 
 
             //输入商品一级类型

@@ -53,12 +53,14 @@
         #TypeMenu > ul {
             padding-left:0px;
             list-style-type:none;
-            display:inline-block;
         }
-        #TypeMenu>ul>li {
+        #TypeMenu ul li {
             margin-left:40px;
             display:inline-block;
         }
+            #TypeMenu ul a:hover {
+                text-decoration:underline;
+            }
         .foot {
             background:#1a1a1a;
             padding:40px 0 0 0;  
@@ -189,7 +191,7 @@
                                 <label class="label">
                                     密码:
                                 </label><br />
-                                <input type="text" name="Password" id="loginPasswordl1"/>
+                                <input type="password" name="Password" id="loginPasswordl1"/>
                             </div>
                             <div class="inputwapperoption">
                                 <input type="checkbox" />保持我的登录状态
@@ -259,8 +261,8 @@
                 <input type="button" value="收起" class="slideup" onclick="slideup()"/>
         </div>
             <a>收藏</a>
-            <a href="~/Cart/List">购物袋<span style="font-weight:bold"> (@if (ViewBag.cartCount != null)
-            { <text>@ViewBag.cartCount</text> }
+            <a href="~/Cart/List">购物袋<span style="font-weight:bold"> (@if (Request.Cookies["cartQty"] != null)
+            { <text>@Request.Cookies["cartQty"].Value</text> }
             else
             {<text>0</text> })</span></a>
 </div><br />
@@ -411,7 +413,12 @@
         <div id="Nav">
             <div id="TypeMenu">
                 <ul>
-                    <a href="~/Product/List"><li>女士</li></a>
+                    <a href="~/Product/List?TypeId=1"><li>女士</li></a>
+                    <a href="~/Product/List?TypeId=2"><li>DIVIDED</li></a>
+                    <a href="~/Product/List?TypeId=3"><li>男士</li></a>
+                    <a href="~/Product/List?TypeId=4"><li>儿童</li></a>
+                    <a href="~/Product/List?TypeId=5"><li>家具</li></a>
+                    <a href="~/Product/List?TypeId=6"><li>MAGAZINE</li></a>
                 </ul>
             </div>
         </div>

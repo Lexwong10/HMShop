@@ -118,7 +118,15 @@
                     <hr />
                     <h5>家庭地址</h5>
                     <div class="addressContent">
-                        @Model.Address.FirstOrDefault().Address1
+                        @if (Model.Address.FirstOrDefault() == null)
+                        {
+                            <text>空</text>
+                        }
+                        else
+                        {
+                            <text>@Model.Address.FirstOrDefault().Address1 </text>
+                        }
+
                     </div>
                 </div>
 

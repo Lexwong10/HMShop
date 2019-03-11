@@ -89,23 +89,40 @@ namespace WebApplication3.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Model.User user)
+        public ActionResult Login(Model.User user , bool? rememberMe)
         {
-            user.Password = Common.Encrypt.Md5(user.Password);
+            var encryptPWD = Encrypt.Md5(user.Password);
             
             var users = userBLL.GetBySituation(u => u.Email == user.Email &&
-           u.Password == user.Password);
+           u.Password == encryptPWD);
             var loginResult = users.Count() == 1;
             if (loginResult)
             {
+                if (rememberMe == true)
+                {
+                    if (Request.Cookies["email"] != null)
+                    {
+                        Request.Cookies["email"].Expires = DateTime.Now.AddDays(-1);
+                        Request.Cookies["email"].Expires = DateTime.Now.AddDays(-1);
+                        Response.Cookies.Add(Request.Cookies["email"]);
+                        Response.Cookies.Add(Request.Cookies["password"]);
+                    }
+                }
+                else {
+                    HttpCookie ce = new HttpCookie("email", user.Email);
+                    HttpCookie cp = new HttpCookie("password", user.Password);
+                    Response.Cookies.Add(ce);
+                    Response.Cookies.Add(cp);
+                }
                 //登陆成功
                 Session.Add("user", users.FirstOrDefault());
                 return RedirectToAction("Index", "Index");
             }
-            else
+            return Json(new Common.JsonResult
             {
-                return RedirectToAction("List", "Product");
-            }
+                Result = ResultType.Error,
+                ErrorTips = "用户名或密码错误"
+            });
         }
 
         public ActionResult AjaxLogin(Model.User user) {

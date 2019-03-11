@@ -103,7 +103,7 @@
             </div>
             <div class="col-md-9" >
                 <div class="range">
-                    @if (currentProductType != null)
+                    @if (currentProductType.ProductType2 != null)
                     {
                         <h4>@currentProductType.ProductType2.Name - @currentProductType.Name</h4>
                     }
@@ -152,11 +152,11 @@
             <div class="col-md-9" >
             <div>
                 <ul class="pagination">
-                    @for (int i = 1; i <= allPage; i++)
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
                     {
                             if (i == currentPage)
                             {
-                            <li class="active">@i</li>
+                            <li class="active"><a>@i</a></li>
                             }
                             else
                             {

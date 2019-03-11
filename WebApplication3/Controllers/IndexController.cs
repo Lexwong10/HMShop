@@ -26,7 +26,8 @@ namespace WebApplication3.Controllers
                 {
                     cartCount += item.Qty;
                 }
-
+                HttpCookie cartQty = new HttpCookie("cartQty", cartCount.ToString());
+                Response.Cookies.Add(cartQty);
                 ViewBag.cartCount = cartCount;
             }
             
