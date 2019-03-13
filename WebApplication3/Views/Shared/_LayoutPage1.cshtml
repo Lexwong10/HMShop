@@ -64,6 +64,7 @@
         .foot {
             background:#1a1a1a;
             padding:40px 0 0 0;  
+            margin-top:20px;
         }
         .footmenu {
             color:#dadada;
@@ -261,7 +262,7 @@
                 <input type="button" value="收起" class="slideup" onclick="slideup()"/>
         </div>
             <a>收藏</a>
-            <a href="~/Cart/List">购物袋<span style="font-weight:bold"> (@if (Request.Cookies["cartQty"] != null)
+            <a href="~/Cart/List">购物袋<span style="font-weight:bold"> (@if (Request.Cookies["cartQty"] != null && Session["user"] != null)
             { <text>@Request.Cookies["cartQty"].Value</text> }
             else
             {<text>0</text> })</span></a>

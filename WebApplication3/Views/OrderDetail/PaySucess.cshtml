@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PaySucess</title>
+</head>
+<body>
+    <script>
+        var t = 3;//跳转时间
+        setInterval("refer()", 1000); //已1秒倒计时
+        function refer() {
+            if (t == 0) {
+                location = "/Index/Index";
+            }
+            document.getElementById('show').innerHTML = "支付成功！, " + t + "秒后跳转到首页";
+            t--;
+        }
+    </script>
+    <div>
+        <span id="show"></span><a href="/Index/Index">点击直接跳转</a>
+    </div>
+</body>
+</html>
+

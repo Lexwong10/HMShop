@@ -20,15 +20,15 @@ namespace WebApplication3.Controllers
             {
                 User u = Session["user"] as User;
                 var myCart = carBLL.GetBySituation(c => c.UserId == u.Id); 
-                int? cartCount = 0;
+                //int? cartCount = 0;
 
-                foreach (var item in myCart)
-                {
-                    cartCount += item.Qty;
-                }
-                HttpCookie cartQty = new HttpCookie("cartQty", cartCount.ToString());
-                Response.Cookies.Add(cartQty);
-                ViewBag.cartCount = cartCount;
+                //foreach (var item in myCart)
+                //{
+                //    cartCount += item.Qty;
+                //}
+                //HttpCookie cartQty = new HttpCookie("cartQty", cartCount.ToString());
+                //Response.Cookies.Add(cartQty);
+                //ViewBag.cartCount = cartCount;
             }
             
             return View(productTypeBLL.GetBySituation(t => t.Pid == null).ToList());

@@ -60,5 +60,6 @@ namespace WebApplication3.Controllers
             ViewBag.currentCart = cartBLL.GetBySituation(c => c.UserId == user.Id).ToList();
             return View(list.ToList());
         }
+
     }
 }

@@ -242,6 +242,7 @@
     <Content Include="Views\Address\MyAddress.cshtml" />
     <Content Include="Views\Order\Checkout.cshtml" />
     <Content Include="Views\Address\DeleteAddress.cshtml" />
+    <Content Include="Views\OrderDetail\PaySucess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -253,7 +254,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\Adress\" />
     <Folder Include="Views\Area\" />
-    <Folder Include="Views\OrderDetail\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

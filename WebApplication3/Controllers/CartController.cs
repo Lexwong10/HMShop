@@ -37,8 +37,8 @@ namespace WebApplication3.Controllers
             if (result.Count() == 1)
             {
                 Cart currentCart = result.FirstOrDefault();
-               var currentCartQty = currentCart.Qty + 1;
-               
+                currentCart.Qty++;
+                cartBLL.Modify(currentCart, "Qty");
             }
             else
             {
@@ -53,7 +53,19 @@ namespace WebApplication3.Controllers
                 cartBLL.Add(c);
             }
 
-            return View("List");
+            //添加购物车数量cookie
+            if (cartBLL.GetBySituation(c => c.UserId == currentUser.Id).Count() == 1)
+            {
+                HttpCookie cartQty = new HttpCookie("cartQty", "1");
+                Response.Cookies.Add(cartQty);
+            }
+            else {
+                HttpCookie newCartQty = Request.Cookies["cartQty"];
+                string newQty = (Convert.ToInt32(newCartQty.Value) + 1).ToString();
+                Response.Cookies.Add(new HttpCookie("cartQty", newQty));
+            }
+
+            return Redirect("/Product/Detail/" + ProductId);
         }
 
 
@@ -86,6 +98,18 @@ namespace WebApplication3.Controllers
         public ActionResult AjaxDeleteItem(int Id) {
             User user = Session["user"] as User;
             cartBLL.DeleteById(Id);
+
+            if (Request.Cookies["cartQty"].Value == "0")
+            {
+                Request.Cookies["cartQty"].Expires.AddDays(-1);
+                Response.Cookies.Add(Request.Cookies["cartQty"]);
+            }
+            else {
+                HttpCookie cartQty = Request.Cookies["cartQty"];
+                string newQty = (Convert.ToInt32(cartQty.Value) - 1).ToString();
+                Response.Cookies.Add(new HttpCookie("cartQty", newQty));
+            }
+
             return RedirectToAction("List");
         }
     }

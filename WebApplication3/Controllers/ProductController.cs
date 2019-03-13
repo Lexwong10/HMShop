@@ -18,7 +18,7 @@ namespace WebApplication3.Controllers
 
         public IProductTypeBLL ProductType = new ProductTypeBLL();
 
-        // GET: Product
+       //筛选显示商品列表
         public ActionResult List(int? TypeId, int? OrderId, int? Page)
         {
             string orderField = null;
@@ -88,6 +88,5 @@ namespace WebApplication3.Controllers
             Product p = productBLL.GetById(id);
             return View(p);
         }
-
     }
 }

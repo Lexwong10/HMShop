@@ -89,7 +89,7 @@ namespace WebApplication3.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Model.User user , bool? rememberMe)
+        public ActionResult Login(Model.User user , string rememberMe)
         {
             var encryptPWD = Encrypt.Md5(user.Password);
             
@@ -98,7 +98,7 @@ namespace WebApplication3.Controllers
             var loginResult = users.Count() == 1;
             if (loginResult)
             {
-                if (rememberMe == false)
+                if (rememberMe == null)
                 {
                     if (Request.Cookies["email"] != null)
                     {

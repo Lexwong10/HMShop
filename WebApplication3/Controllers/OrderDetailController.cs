@@ -38,6 +38,14 @@ namespace WebApplication3.Controllers
             orderToChange.OrderStatus = 2;
             orderBLL.Modify(orderToChange, "OrderStatus");
 
+            //清除购物车数量
+            Request.Cookies["cartQty"].Expires.AddDays(-1);
+            Response.Cookies.Add(Request.Cookies["cartQty"]);
+
+            return RedirectToAction("PaySucess");
+        }
+
+        public ActionResult PaySucess() {
             return View();
         }
     }

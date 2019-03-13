@@ -44,6 +44,11 @@
                 orderId = $(this).val();
                 order(orderId);
             });
+
+            if (@Request.QueryString["TypeId"] != null) {
+                var obj = @Request.QueryString["TypeId"];
+                $('.level_' + obj).show();
+            }
         });
 
         function order(orderId) {
@@ -61,13 +66,12 @@
             $('#formProductList').submit();
         }
 
-        function active() {
-            $('.level2').slideToggle(0);
+
+        function active(obj) {
+            $('.level_' + obj).slideToggle(0);
         }
 
-        function hold() {
-            $('.level2').css('display', 'block');
-        }
+
 
     </script>
 </head>
@@ -87,12 +91,12 @@
                     {
                         <ul>
                             <li>
-                                <a class="level1" onclick="active(this);">@t.Name</a>
+                                <a class="level1" onclick="active(@t.Id);">@t.Name</a>
                                 @foreach (var tt in t.ProductType1)
                                 {
-                                    <ul class="level2"  style="display:none;">
+                                    <ul class="level_@t.Id"  style="display:none;">
                                         <li>
-                                            <a onclick="hold();" href="javascript:ProductType(@tt.Id)">@tt.Name</a>
+                                            <a  href="javascript:ProductType(@tt.Id)">@tt.Name</a>
                                         </li>
                                     </ul>
                                 }
