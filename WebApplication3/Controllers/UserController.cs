@@ -98,7 +98,7 @@ namespace WebApplication3.Controllers
             var loginResult = users.Count() == 1;
             if (loginResult)
             {
-                if (rememberMe == true)
+                if (rememberMe == false)
                 {
                     if (Request.Cookies["email"] != null)
                     {
